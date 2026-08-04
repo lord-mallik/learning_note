@@ -1,0 +1,2097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>React & JS Interview Prep</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --card: #16161f;
+    --border: #1e1e2e;
+    --accent: #7c6af7;
+    --accent2: #f76a6a;
+    --accent3: #6af7c0;
+    --accent4: #f7c46a;
+    --text: #e8e8f0;
+    --muted: #7070a0;
+    --easy: #6af7c0;
+    --medium: #f7c46a;
+    --hard: #f76a6a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, #0d0d1a 0%, #12121f 50%, #0a0a14 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 3rem 2rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: 50%; transform: translateX(-50%);
+    width: 600px; height: 300px;
+    background: radial-gradient(ellipse, rgba(124,106,247,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  header h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    letter-spacing: -1px;
+    background: linear-gradient(135deg, #fff 0%, var(--accent) 60%, var(--accent3) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  header p {
+    color: var(--muted);
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .stat {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.5rem 1.2rem;
+    font-size: 0.85rem;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+  }
+  .stat span { color: var(--accent); font-weight: 600; }
+
+  /* LAYOUT */
+  .container { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+  /* SEARCH */
+  .search-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,10,15,0.95);
+    backdrop-filter: blur(10px);
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .search-bar input {
+    width: 100%;
+    max-width: 700px;
+    display: block;
+    margin: 0 auto;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.75rem 1.2rem;
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-bar input:focus { border-color: var(--accent); }
+  .search-bar input::placeholder { color: var(--muted); }
+
+  /* TOC */
+  .toc {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+  .toc h2 {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--muted);
+    margin-bottom: 1rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.5rem;
+  }
+  .toc a {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 0.85rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    transition: background 0.15s;
+    display: block;
+  }
+  .toc a:hover { background: rgba(124,106,247,0.1); }
+
+  /* SECTION */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 3rem 0 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-num {
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 0.2rem 0.5rem;
+    border-radius: 5px;
+    letter-spacing: 1px;
+  }
+  .section-header h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+
+  /* DIFFICULTY BADGE */
+  .difficulty {
+    font-size: 0.65rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+  .easy { background: rgba(106,247,192,0.12); color: var(--easy); border: 1px solid rgba(106,247,192,0.3); }
+  .medium { background: rgba(247,196,106,0.12); color: var(--medium); border: 1px solid rgba(247,196,106,0.3); }
+  .hard { background: rgba(247,106,106,0.12); color: var(--hard); border: 1px solid rgba(247,106,106,0.3); }
+
+  /* QA CARD */
+  .qa-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .qa-card:hover { border-color: rgba(124,106,247,0.4); }
+  .qa-card.hidden { display: none; }
+
+  .qa-question {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1rem 1.2rem;
+    cursor: pointer;
+    user-select: none;
+  }
+  .qa-question:hover { background: rgba(255,255,255,0.02); }
+  .q-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--muted);
+    min-width: 28px;
+  }
+  .q-text {
+    font-size: 0.95rem;
+    font-weight: 600;
+    flex: 1;
+  }
+  .toggle-icon {
+    color: var(--muted);
+    font-size: 1.2rem;
+    transition: transform 0.25s;
+    flex-shrink: 0;
+  }
+  .qa-card.open .toggle-icon { transform: rotate(45deg); color: var(--accent); }
+
+  .qa-answer {
+    display: none;
+    padding: 0 1.2rem 1.2rem 1.2rem;
+    border-top: 1px solid var(--border);
+  }
+  .qa-card.open .qa-answer { display: block; }
+  .qa-answer p { color: #c0c0d8; font-size: 0.9rem; margin-bottom: 0.75rem; line-height: 1.8; }
+  .qa-answer p:last-child { margin-bottom: 0; }
+  .qa-answer ul, .qa-answer ol {
+    color: #c0c0d8;
+    font-size: 0.9rem;
+    padding-left: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .qa-answer li { margin-bottom: 0.3rem; }
+  .qa-answer strong { color: var(--accent3); font-weight: 600; }
+  .qa-answer em { color: var(--accent4); font-style: italic; }
+
+  /* CODE BLOCK */
+  pre {
+    background: #0d0d14;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+    overflow-x: auto;
+    margin: 0.75rem 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    line-height: 1.6;
+  }
+  code { color: #a8d8ea; }
+  .keyword { color: #c792ea; }
+  .string { color: #c3e88d; }
+  .comment { color: #546e7a; font-style: italic; }
+  .func { color: #82aaff; }
+  .num { color: #f78c6c; }
+
+  /* NOTE BOX */
+  .note {
+    background: rgba(124,106,247,0.08);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 0.75rem 1rem;
+    margin: 0.75rem 0;
+    font-size: 0.85rem;
+    color: #b0b0d0;
+  }
+  .note.tip { border-color: var(--accent3); background: rgba(106,247,192,0.06); }
+  .note.warn { border-color: var(--accent4); background: rgba(247,196,106,0.06); }
+  .note.danger { border-color: var(--accent2); background: rgba(247,106,106,0.06); }
+
+  /* TABLE */
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin: 0.75rem 0; }
+  th { background: rgba(124,106,247,0.15); color: var(--accent); text-align: left; padding: 0.6rem 0.8rem; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; letter-spacing: 1px; }
+  td { padding: 0.5rem 0.8rem; color: #c0c0d8; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: none; }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 2rem;
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-family: 'JetBrains Mono', monospace;
+    border-top: 1px solid var(--border);
+    margin-top: 3rem;
+  }
+  .no-results { text-align: center; color: var(--muted); padding: 3rem; font-family: 'JetBrains Mono', monospace; display: none; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>React & JavaScript<br>Interview Prep</h1>
+  <p>// Complete Q&A Reference Guide</p>
+  <div class="stats">
+    <div class="stat"><span>11</span> Sections</div>
+    <div class="stat"><span>150+</span> Questions</div>
+    <div class="stat"><span>3</span> Difficulty Levels</div>
+    <div class="stat"><span>2025</span> Ready</div>
+  </div>
+</header>
+
+<div class="search-bar">
+  <input type="text" id="search" placeholder="🔍  Search any question..." oninput="filterQuestions(this.value)" />
+</div>
+
+<div class="container">
+
+  <!-- TOC -->
+  <div class="toc">
+    <h2>// Jump to Section</h2>
+    <div class="toc-grid">
+      <a href="#s1">01 · JavaScript Core</a>
+      <a href="#s2">02 · React Fundamentals</a>
+      <a href="#s3">03 · React Hooks</a>
+      <a href="#s4">04 · Redux & State</a>
+      <a href="#s5">05 · React Router</a>
+      <a href="#s6">06 · Performance</a>
+      <a href="#s7">07 · API & Auth</a>
+      <a href="#s8">08 · Coding Questions</a>
+      <a href="#s9">09 · JS Output Questions</a>
+      <a href="#s10">10 · React Output Questions</a>
+      <a href="#s11">11 · System Design</a>
+    </div>
+  </div>
+
+  <div class="no-results" id="noResults">No questions found. Try different keywords.</div>
+
+<!-- ═══════════════════════════════════════ SECTION 1 ═══ -->
+<div class="section-header" id="s1">
+  <span class="section-num">01</span>
+  <h2>JavaScript Core</h2>
+</div>
+
+<!-- EASY -->
+<div class="qa-card" data-q="What is JavaScript">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q1</span>
+    <span class="q-text">What is JavaScript?</span>
+    <span class="difficulty easy">Easy</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p>JavaScript is a <strong>lightweight, interpreted, high-level programming language</strong> primarily used to make web pages interactive. It runs in the browser (client-side) and also on servers via <strong>Node.js</strong> (server-side).</p>
+    <ul>
+      <li><strong>Dynamic</strong> – types are determined at runtime</li>
+      <li><strong>Single-threaded</strong> – runs one operation at a time</li>
+      <li><strong>Event-driven</strong> – reacts to user/system events</li>
+      <li><strong>Prototype-based</strong> – OOP via prototypes, not classical classes</li>
+      <li><strong>First-class functions</strong> – functions can be passed, returned, and assigned</li>
+    </ul>
+    <div class="note tip">JS is the only language that runs natively in every browser — making it the foundation of the web.</div>
+  </div>
+</div>
+
+<div class="qa-card" data-q="Difference between var let const">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q2</span>
+    <span class="q-text">Difference between var, let, and const?</span>
+    <span class="difficulty easy">Easy</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <table>
+      <tr><th>Feature</th><th>var</th><th>let</th><th>const</th></tr>
+      <tr><td>Scope</td><td>Function</td><td>Block</td><td>Block</td></tr>
+      <tr><td>Hoisting</td><td>Yes (undefined)</td><td>Yes (TDZ)</td><td>Yes (TDZ)</td></tr>
+      <tr><td>Re-declare</td><td>✅</td><td>❌</td><td>❌</td></tr>
+      <tr><td>Re-assign</td><td>✅</td><td>✅</td><td>❌</td></tr>
+      <tr><td>Global object prop</td><td>✅</td><td>❌</td><td>❌</td></tr>
+    </table>
+    <div class="note warn"><strong>TDZ</strong> (Temporal Dead Zone): <code>let</code> and <code>const</code> are hoisted but NOT initialized — accessing them before declaration throws ReferenceError.</div>
+    <pre><code><span class="comment">// var – function scoped, can be re-declared</span>
+<span class="keyword">var</span> x = 1;
+<span class="keyword">var</span> x = 2; <span class="comment">// OK</span>
+
+<span class="comment">// let – block scoped</span>
+<span class="keyword">let</span> y = 1;
+{ <span class="keyword">let</span> y = 2; } <span class="comment">// Different y</span>
+
+<span class="comment">// const – must be initialized, can't re-assign</span>
+<span class="keyword">const</span> z = [1,2,3];
+z.push(4); <span class="comment">// OK – mutating is fine</span>
+z = [];    <span class="comment">// ❌ TypeError</span></code></pre>
+  </div>
+</div>
+
+<div class="qa-card" data-q="What is Hoisting">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q3</span>
+    <span class="q-text">What is Hoisting?</span>
+    <span class="difficulty easy">Easy</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p>Hoisting is JavaScript's default behavior of <strong>moving declarations to the top of their scope</strong> during the compilation phase, before code execution.</p>
+    <ul>
+      <li><strong>var</strong> – hoisted and initialized with <code>undefined</code></li>
+      <li><strong>let/const</strong> – hoisted but NOT initialized (Temporal Dead Zone)</li>
+      <li><strong>function declarations</strong> – fully hoisted (both name and body)</li>
+      <li><strong>function expressions</strong> – only the variable is hoisted (not the function)</li>
+    </ul>
+    <pre><code>console.log(a); <span class="comment">// undefined (hoisted)</span>
+<span class="keyword">var</span> a = 5;
+
+console.log(b); <span class="comment">// ❌ ReferenceError (TDZ)</span>
+<span class="keyword">let</span> b = 5;
+
+<span class="func">greet</span>(); <span class="comment">// "Hello!" – function fully hoisted</span>
+<span class="keyword">function</span> <span class="func">greet</span>() { console.log(<span class="string">"Hello!"</span>); }
+
+<span class="func">sayHi</span>(); <span class="comment">// ❌ TypeError – only var is hoisted, not function</span>
+<span class="keyword">var</span> sayHi = <span class="keyword">function</span>() { console.log(<span class="string">"Hi!"</span>); }</code></pre>
+  </div>
+</div>
+
+<div class="qa-card" data-q="Difference between == and ===">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q4</span>
+    <span class="q-text">Difference between == and ===?</span>
+    <span class="difficulty easy">Easy</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p><strong>==</strong> (Loose equality): compares values after <em>type coercion</em> — JS converts types before comparing.</p>
+    <p><strong>===</strong> (Strict equality): compares both <em>value AND type</em> — no coercion.</p>
+    <pre><code>0 == <span class="string">""</span>        <span class="comment">// true  (coercion)</span>
+0 === <span class="string">""</span>       <span class="comment">// false (different types)</span>
+null == undefined  <span class="comment">// true</span>
+null === undefined <span class="comment">// false</span>
+1 == <span class="string">"1"</span>        <span class="comment">// true</span>
+1 === <span class="string">"1"</span>       <span class="comment">// false</span></code></pre>
+    <div class="note danger">Always prefer <code>===</code> — coercion rules are complex and lead to bugs.</div>
+  </div>
+</div>
+
+<div class="qa-card" data-q="What is Scope">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q5</span>
+    <span class="q-text">What is Scope?</span>
+    <span class="difficulty easy">Easy</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p>Scope determines the <strong>accessibility (visibility) of variables</strong>. JS has 4 types:</p>
+    <ul>
+      <li><strong>Global Scope</strong> – accessible everywhere</li>
+      <li><strong>Function Scope</strong> – accessible only inside that function (<code>var</code>)</li>
+      <li><strong>Block Scope</strong> – accessible inside <code>{}</code> (<code>let</code>, <code>const</code>)</li>
+      <li><strong>Module Scope</strong> – accessible only within the module file</li>
+    </ul>
+    <p>JS uses <strong>Lexical Scoping</strong> — a function's scope is determined by where it is <em>written</em>, not where it is called.</p>
+    <pre><code><span class="keyword">let</span> global = <span class="string">"I'm global"</span>;
+<span class="keyword">function</span> <span class="func">outer</span>() {
+  <span class="keyword">let</span> outerVar = <span class="string">"outer"</span>;
+  <span class="keyword">function</span> <span class="func">inner</span>() {
+    <span class="keyword">let</span> innerVar = <span class="string">"inner"</span>;
+    console.log(outerVar); <span class="comment">// ✅ accessible (closure)</span>
+    console.log(global);   <span class="comment">// ✅ accessible</span>
+  }
+  console.log(innerVar); <span class="comment">// ❌ ReferenceError</span>
+}</code></pre>
+  </div>
+</div>
+
+<div class="qa-card" data-q="What is a Closure">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q6</span>
+    <span class="q-text">What is a Closure?</span>
+    <span class="difficulty easy">Easy</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p>A closure is a function that <strong>remembers the variables from its outer scope</strong> even after the outer function has returned. Closures are created every time a function is created.</p>
+    <pre><code><span class="keyword">function</span> <span class="func">makeCounter</span>() {
+  <span class="keyword">let</span> count = 0;          <span class="comment">// private variable</span>
+  <span class="keyword">return function</span>() {
+    count++;
+    <span class="keyword">return</span> count;
+  };
+}
+<span class="keyword">const</span> counter = <span class="func">makeCounter</span>();
+counter(); <span class="comment">// 1</span>
+counter(); <span class="comment">// 2  — count is "closed over"</span></code></pre>
+    <p><strong>Real-world use cases:</strong> Data privacy, memoization, event handlers, React's useState (internally uses closures), module pattern.</p>
+    <div class="note tip">Every React hook like <code>useState</code> and <code>useEffect</code> relies on closures to remember state between renders.</div>
+  </div>
+</div>
+
+<div class="qa-card" data-q="What is an Arrow Function">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q7</span>
+    <span class="q-text">What is an Arrow Function?</span>
+    <span class="difficulty easy">Easy</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p>Arrow functions are a <strong>shorter syntax</strong> for writing functions. Key differences from regular functions:</p>
+    <ul>
+      <li><strong>No own <code>this</code></strong> – inherits <code>this</code> from enclosing lexical scope</li>
+      <li><strong>No <code>arguments</code> object</strong></li>
+      <li><strong>Cannot be used as constructors</strong> (no <code>new</code>)</li>
+      <li><strong>No <code>prototype</code></strong> property</li>
+    </ul>
+    <pre><code><span class="comment">// Regular function</span>
+<span class="keyword">function</span> <span class="func">add</span>(a, b) { <span class="keyword">return</span> a + b; }
+
+<span class="comment">// Arrow function</span>
+<span class="keyword">const</span> add = (a, b) => a + b;
+
+<span class="comment">// 'this' difference</span>
+<span class="keyword">const</span> obj = {
+  name: <span class="string">"React"</span>,
+  regular: <span class="keyword">function</span>() { console.log(<span class="keyword">this</span>.name); }, <span class="comment">// "React"</span>
+  arrow: () => { console.log(<span class="keyword">this</span>.name); }      <span class="comment">// undefined</span>
+};</code></pre>
+  </div>
+</div>
+
+<div class="qa-card" data-q="What is Destructuring">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q8</span>
+    <span class="q-text">What is Destructuring?</span>
+    <span class="difficulty easy">Easy</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p>Destructuring is a syntax that <strong>unpacks values from arrays or properties from objects</strong> into distinct variables.</p>
+    <pre><code><span class="comment">// Array destructuring</span>
+<span class="keyword">const</span> [a, b, ...rest] = [1, 2, 3, 4];
+<span class="comment">// a=1, b=2, rest=[3,4]</span>
+
+<span class="comment">// Object destructuring</span>
+<span class="keyword">const</span> { name, age = 25 } = { name: <span class="string">"Alice"</span> };
+<span class="comment">// name="Alice", age=25 (default)</span>
+
+<span class="comment">// Rename while destructuring</span>
+<span class="keyword">const</span> { name: userName } = { name: <span class="string">"Alice"</span> };
+
+<span class="comment">// In function params (very common in React)</span>
+<span class="keyword">const</span> <span class="func">UserCard</span> = ({ name, age }) => &lt;div&gt;{name}&lt;/div&gt;;</code></pre>
+  </div>
+</div>
+
+<div class="qa-card" data-q="What is the Spread Operator">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q9</span>
+    <span class="q-text">What is the Spread Operator?</span>
+    <span class="difficulty easy">Easy</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p>The spread operator (<strong>...</strong>) <strong>expands</strong> an iterable (array, object) into individual elements.</p>
+    <pre><code><span class="comment">// Arrays</span>
+<span class="keyword">const</span> a = [1, 2]; <span class="keyword">const</span> b = [3, 4];
+<span class="keyword">const</span> combined = [...a, ...b]; <span class="comment">// [1,2,3,4]</span>
+
+<span class="comment">// Objects (shallow merge)</span>
+<span class="keyword">const</span> user = { name: <span class="string">"Alice"</span> };
+<span class="keyword">const</span> updated = { ...user, age: 25 }; <span class="comment">// {name:"Alice", age:25}</span>
+
+<span class="comment">// React: immutable state update</span>
+setState(prev => ({ ...prev, isLoading: <span class="keyword">false</span> }));
+
+<span class="comment">// Function call</span>
+Math.max(...[1, 2, 3]); <span class="comment">// 3</span></code></pre>
+  </div>
+</div>
+
+<div class="qa-card" data-q="What is the Rest Operator">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q10</span>
+    <span class="q-text">What is the Rest Operator?</span>
+    <span class="difficulty easy">Easy</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p>The rest operator (<strong>...</strong>) <strong>collects</strong> remaining elements into an array. Same syntax as spread but used in function params or destructuring.</p>
+    <pre><code><span class="comment">// Function params</span>
+<span class="keyword">function</span> <span class="func">sum</span>(...nums) {
+  <span class="keyword">return</span> nums.reduce((a, b) => a + b, 0);
+}
+<span class="func">sum</span>(1, 2, 3, 4); <span class="comment">// 10</span>
+
+<span class="comment">// Destructuring</span>
+<span class="keyword">const</span> [first, ...others] = [1, 2, 3, 4];
+<span class="comment">// first=1, others=[2,3,4]</span>
+
+<span class="keyword">const</span> { a, ...remaining } = { a:1, b:2, c:3 };
+<span class="comment">// a=1, remaining={b:2, c:3}</span></code></pre>
+    <div class="note">Key difference: <strong>Spread</strong> expands → used in expressions. <strong>Rest</strong> collects → used in declarations.</div>
+  </div>
+</div>
+
+<!-- MEDIUM JS -->
+<div class="qa-card" data-q="What is an Execution Context">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q11</span>
+    <span class="q-text">What is an Execution Context?</span>
+    <span class="difficulty medium">Medium</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p>An Execution Context is the <strong>environment in which JavaScript code is evaluated and executed</strong>. It contains:</p>
+    <ul>
+      <li><strong>Variable Environment</strong> – all variable/function declarations</li>
+      <li><strong>Scope Chain</strong> – references to outer environments</li>
+      <li><strong>this</strong> – value of the current context</li>
+    </ul>
+    <p><strong>Types:</strong></p>
+    <ul>
+      <li><strong>Global EC</strong> – created when JS starts; one per program</li>
+      <li><strong>Function EC</strong> – created every time a function is called</li>
+      <li><strong>Eval EC</strong> – created inside eval()</li>
+    </ul>
+    <p>Each EC has two phases: <em>Creation Phase</em> (hoisting, this binding) and <em>Execution Phase</em> (line-by-line execution).</p>
+  </div>
+</div>
+
+<div class="qa-card" data-q="What is the Call Stack">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q12</span>
+    <span class="q-text">What is the Call Stack?</span>
+    <span class="difficulty medium">Medium</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p>The Call Stack is a <strong>LIFO (Last In, First Out) data structure</strong> that tracks which function is currently being executed.</p>
+    <ul>
+      <li>When a function is called → its EC is pushed onto the stack</li>
+      <li>When a function returns → its EC is popped off the stack</li>
+      <li><strong>Stack Overflow</strong> occurs when the stack exceeds its limit (infinite recursion)</li>
+    </ul>
+    <pre><code><span class="keyword">function</span> <span class="func">a</span>() { <span class="func">b</span>(); }
+<span class="keyword">function</span> <span class="func">b</span>() { <span class="func">c</span>(); }
+<span class="keyword">function</span> <span class="func">c</span>() { console.log(<span class="string">"done"</span>); }
+<span class="func">a</span>();
+<span class="comment">// Stack: [global] → [a] → [a,b] → [a,b,c] → [a,b] → [a] → [global]</span></code></pre>
+  </div>
+</div>
+
+<div class="qa-card" data-q="What is the Event Loop">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q13</span>
+    <span class="q-text">What is the Event Loop?</span>
+    <span class="difficulty medium">Medium</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p>The Event Loop is the mechanism that allows JS (single-threaded) to perform <strong>non-blocking async operations</strong>.</p>
+    <p><strong>How it works:</strong></p>
+    <ol>
+      <li>JS executes sync code in the Call Stack</li>
+      <li>Async operations (setTimeout, fetch) are handed to Web APIs</li>
+      <li>When async is done, callbacks go to the <strong>Callback Queue</strong> (macrotask)</li>
+      <li>Promises go to the <strong>Microtask Queue</strong></li>
+      <li>Event Loop checks: if stack is empty → run ALL microtasks → run ONE macrotask → repeat</li>
+    </ol>
+    <div class="note warn"><strong>Priority:</strong> Microtasks (Promises) always run BEFORE Macrotasks (setTimeout).</div>
+    <pre><code>console.log(<span class="string">'1'</span>);
+setTimeout(() => console.log(<span class="string">'2'</span>), 0);
+Promise.resolve().then(() => console.log(<span class="string">'3'</span>));
+console.log(<span class="string">'4'</span>);
+<span class="comment">// Output: 1, 4, 3, 2</span></code></pre>
+  </div>
+</div>
+
+<div class="qa-card" data-q="What is a Callback Function">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q14</span>
+    <span class="q-text">What is a Callback Function?</span>
+    <span class="difficulty medium">Medium</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p>A callback is a <strong>function passed as an argument to another function</strong>, to be executed later (after an async operation or event).</p>
+    <pre><code><span class="keyword">function</span> <span class="func">fetchData</span>(url, callback) {
+  setTimeout(() => {
+    <span class="keyword">const</span> data = { user: <span class="string">"Alice"</span> };
+    <span class="func">callback</span>(data);
+  }, 1000);
+}
+
+<span class="func">fetchData</span>(<span class="string">"/api/user"</span>, (data) => {
+  console.log(data.user);
+});</code></pre>
+    <div class="note danger"><strong>Callback Hell</strong>: Deeply nested callbacks become unreadable. Solved by Promises and async/await.</div>
+  </div>
+</div>
+
+<div class="qa-card" data-q="What are Promises">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q15</span>
+    <span class="q-text">What are Promises?</span>
+    <span class="difficulty medium">Medium</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p>A Promise is an object representing the <strong>eventual completion or failure of an async operation</strong>. It has 3 states: <em>Pending</em>, <em>Fulfilled</em>, <em>Rejected</em>.</p>
+    <pre><code><span class="keyword">const</span> promise = <span class="keyword">new</span> Promise((resolve, reject) => {
+  <span class="keyword">const</span> success = <span class="keyword">true</span>;
+  <span class="keyword">if</span> (success) resolve(<span class="string">"data"</span>);
+  <span class="keyword">else</span> reject(<span class="keyword">new</span> Error(<span class="string">"failed"</span>));
+});
+
+promise
+  .then(data => console.log(data))
+  .catch(err => console.error(err))
+  .finally(() => console.log(<span class="string">"done"</span>));
+
+<span class="comment">// Parallel execution</span>
+Promise.all([fetch(url1), fetch(url2)]); <span class="comment">// all or fail</span>
+Promise.allSettled([...]);               <span class="comment">// all results</span>
+Promise.race([...]);                     <span class="comment">// first to settle</span></code></pre>
+  </div>
+</div>
+
+<div class="qa-card" data-q="Promise vs Async Await">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q16</span>
+    <span class="q-text">Promise vs Async/Await?</span>
+    <span class="difficulty medium">Medium</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p>Async/Await is <strong>syntactic sugar over Promises</strong> — it makes async code look synchronous and is easier to read/debug.</p>
+    <pre><code><span class="comment">// Promise chaining</span>
+<span class="func">fetchUser</span>()
+  .then(user => <span class="func">fetchPosts</span>(user.id))
+  .then(posts => console.log(posts))
+  .catch(err => console.error(err));
+
+<span class="comment">// Async/Await (same thing, cleaner)</span>
+<span class="keyword">async function</span> <span class="func">load</span>() {
+  <span class="keyword">try</span> {
+    <span class="keyword">const</span> user = <span class="keyword">await</span> <span class="func">fetchUser</span>();
+    <span class="keyword">const</span> posts = <span class="keyword">await</span> <span class="func">fetchPosts</span>(user.id);
+    console.log(posts);
+  } <span class="keyword">catch</span>(err) {
+    console.error(err);
+  }
+}</code></pre>
+    <table>
+      <tr><th></th><th>Promises</th><th>Async/Await</th></tr>
+      <tr><td>Readability</td><td>Chaining</td><td>Sequential-looking</td></tr>
+      <tr><td>Error handling</td><td>.catch()</td><td>try/catch</td></tr>
+      <tr><td>Debugging</td><td>Harder</td><td>Easier (line-by-line)</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="qa-card" data-q="What are Microtasks and Macrotasks">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q17</span>
+    <span class="q-text">What are Microtasks and Macrotasks?</span>
+    <span class="difficulty medium">Medium</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <table>
+      <tr><th>Microtasks</th><th>Macrotasks</th></tr>
+      <tr><td>Promise.then/catch/finally</td><td>setTimeout</td></tr>
+      <tr><td>queueMicrotask()</td><td>setInterval</td></tr>
+      <tr><td>MutationObserver</td><td>setImmediate (Node)</td></tr>
+      <tr><td>async/await</td><td>I/O callbacks</td></tr>
+    </table>
+    <div class="note warn"><strong>Priority:</strong> After each macrotask, ALL microtasks are flushed before the next macrotask runs.</div>
+    <pre><code>setTimeout(() => console.log(<span class="string">"macro"</span>), 0);
+Promise.resolve().then(() => console.log(<span class="string">"micro"</span>));
+<span class="comment">// Output: micro → macro</span></code></pre>
+  </div>
+</div>
+
+<div class="qa-card" data-q="What is Debouncing">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q18</span>
+    <span class="q-text">What is Debouncing?</span>
+    <span class="difficulty medium">Medium</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p>Debouncing ensures a function is <strong>only called after a specified delay has passed since the last invocation</strong>. Useful for search inputs, resize events.</p>
+    <pre><code><span class="keyword">function</span> <span class="func">debounce</span>(fn, delay) {
+  <span class="keyword">let</span> timer;
+  <span class="keyword">return function</span>(...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => <span class="func">fn</span>.apply(<span class="keyword">this</span>, args), delay);
+  };
+}
+
+<span class="keyword">const</span> handleSearch = <span class="func">debounce</span>((query) => {
+  <span class="func">fetchResults</span>(query);
+}, 500);
+
+input.addEventListener(<span class="string">'input'</span>, e => <span class="func">handleSearch</span>(e.target.value));
+<span class="comment">// API called only 500ms after user stops typing</span></code></pre>
+  </div>
+</div>
+
+<div class="qa-card" data-q="What is Throttling">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q19</span>
+    <span class="q-text">What is Throttling?</span>
+    <span class="difficulty medium">Medium</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p>Throttling ensures a function is <strong>called at most once per specified time period</strong>, regardless of how many times it's triggered. Useful for scroll, resize events.</p>
+    <pre><code><span class="keyword">function</span> <span class="func">throttle</span>(fn, limit) {
+  <span class="keyword">let</span> lastCall = 0;
+  <span class="keyword">return function</span>(...args) {
+    <span class="keyword">const</span> now = Date.now();
+    <span class="keyword">if</span> (now - lastCall >= limit) {
+      lastCall = now;
+      <span class="keyword">return</span> <span class="func">fn</span>.apply(<span class="keyword">this</span>, args);
+    }
+  };
+}
+<span class="comment">// Debounce: waits for silence → search input</span>
+<span class="comment">// Throttle: fires at intervals → scroll handler</span></code></pre>
+  </div>
+</div>
+
+<div class="qa-card" data-q="What are Higher Order Functions">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q20</span>
+    <span class="q-text">What are Higher Order Functions?</span>
+    <span class="difficulty medium">Medium</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p>A Higher Order Function (HOF) is a function that either <strong>takes another function as an argument</strong> or <strong>returns a function</strong>.</p>
+    <pre><code><span class="comment">// Takes a function as argument</span>
+[1,2,3].map(x => x * 2);    <span class="comment">// map is HOF</span>
+[1,2,3].filter(x => x > 1); <span class="comment">// filter is HOF</span>
+
+<span class="comment">// Returns a function</span>
+<span class="keyword">function</span> <span class="func">multiplier</span>(factor) {
+  <span class="keyword">return</span> (num) => num * factor;
+}
+<span class="keyword">const</span> double = <span class="func">multiplier</span>(2);
+<span class="func">double</span>(5); <span class="comment">// 10</span></code></pre>
+  </div>
+</div>
+
+<div class="qa-card" data-q="Difference between map filter reduce forEach">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q21</span>
+    <span class="q-text">Difference between map(), filter(), reduce(), forEach()?</span>
+    <span class="difficulty medium">Medium</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <table>
+      <tr><th>Method</th><th>Returns</th><th>Use Case</th></tr>
+      <tr><td>map()</td><td>New array (same length)</td><td>Transform each element</td></tr>
+      <tr><td>filter()</td><td>New array (subset)</td><td>Select elements by condition</td></tr>
+      <tr><td>reduce()</td><td>Single value</td><td>Accumulate to one result</td></tr>
+      <tr><td>forEach()</td><td>undefined</td><td>Side effects, no return</td></tr>
+    </table>
+    <pre><code><span class="keyword">const</span> nums = [1, 2, 3, 4, 5];
+nums.map(x => x * 2);              <span class="comment">// [2,4,6,8,10]</span>
+nums.filter(x => x % 2 === 0);     <span class="comment">// [2,4]</span>
+nums.reduce((acc, x) => acc + x, 0); <span class="comment">// 15</span>
+nums.forEach(x => console.log(x)); <span class="comment">// side effects</span></code></pre>
+  </div>
+</div>
+
+<div class="qa-card" data-q="What is Currying">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q22</span>
+    <span class="q-text">What is Currying?</span>
+    <span class="difficulty medium">Medium</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p>Currying transforms a function with multiple arguments into <strong>a sequence of functions each taking a single argument</strong>.</p>
+    <pre><code><span class="comment">// Normal function</span>
+<span class="keyword">const</span> add = (a, b, c) => a + b + c;
+<span class="func">add</span>(1, 2, 3); <span class="comment">// 6</span>
+
+<span class="comment">// Curried version</span>
+<span class="keyword">const</span> curriedAdd = a => b => c => a + b + c;
+<span class="func">curriedAdd</span>(1)(2)(3); <span class="comment">// 6</span>
+
+<span class="comment">// Partial application – useful!</span>
+<span class="keyword">const</span> add5 = <span class="func">curriedAdd</span>(5);
+<span class="func">add5</span>(2)(3); <span class="comment">// 10</span></code></pre>
+    <p><strong>Use cases:</strong> Reusable configurations, partial application, function composition, event handlers.</p>
+  </div>
+</div>
+
+<div class="qa-card" data-q="What is a Prototype Prototype Inheritance Prototype Chain">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q23</span>
+    <span class="q-text">What is a Prototype? Prototype Inheritance? Prototype Chain?</span>
+    <span class="difficulty medium">Medium</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p><strong>Prototype:</strong> Every JS object has a hidden <code>[[Prototype]]</code> property linking to another object from which it inherits properties/methods.</p>
+    <p><strong>Prototype Inheritance:</strong> Objects inherit from other objects (not classes). When you access a property, JS walks up the prototype chain to find it.</p>
+    <p><strong>Prototype Chain:</strong> The chain of linked prototypes ending at <code>Object.prototype</code> (which is <code>null</code>).</p>
+    <pre><code><span class="keyword">function</span> <span class="func">Animal</span>(name) { <span class="keyword">this</span>.name = name; }
+Animal.prototype.speak = <span class="keyword">function</span>() {
+  <span class="keyword">return</span> <span class="string">`${this.name} makes a noise`</span>;
+};
+
+<span class="keyword">const</span> dog = <span class="keyword">new</span> <span class="func">Animal</span>(<span class="string">"Rex"</span>);
+dog.speak(); <span class="comment">// "Rex makes a noise"</span>
+
+<span class="comment">// Chain: dog → Animal.prototype → Object.prototype → null</span>
+Object.getPrototypeOf(dog) === Animal.prototype; <span class="comment">// true</span></code></pre>
+  </div>
+</div>
+
+<!-- HARD JS -->
+<div class="qa-card" data-q="Explain Memory Leaks">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q24</span>
+    <span class="q-text">Explain Memory Leaks</span>
+    <span class="difficulty hard">Hard</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p>A memory leak occurs when <strong>memory that is no longer needed is not released</strong>, causing the app to consume increasing memory over time.</p>
+    <p><strong>Common causes in JS/React:</strong></p>
+    <ul>
+      <li>Global variables holding references</li>
+      <li>Forgotten timers (<code>setInterval</code> without cleanup)</li>
+      <li>Event listeners not removed</li>
+      <li>Closures retaining large data</li>
+      <li>React: setState after component unmounts</li>
+    </ul>
+    <pre><code><span class="comment">// ❌ Leak: timer runs after unmount</span>
+useEffect(() => {
+  <span class="keyword">const</span> id = setInterval(fetchData, 1000);
+}, []);
+
+<span class="comment">// ✅ Fix: cleanup function</span>
+useEffect(() => {
+  <span class="keyword">const</span> id = setInterval(fetchData, 1000);
+  <span class="keyword">return</span> () => clearInterval(id); <span class="comment">// cleanup!</span>
+}, []);</code></pre>
+  </div>
+</div>
+
+<div class="qa-card" data-q="Shallow Copy vs Deep Copy">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q25</span>
+    <span class="q-text">Shallow Copy vs Deep Copy</span>
+    <span class="difficulty hard">Hard</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p><strong>Shallow Copy:</strong> Copies only the first level. Nested objects still share the same reference.</p>
+    <p><strong>Deep Copy:</strong> Copies all levels. Completely independent clone.</p>
+    <pre><code><span class="keyword">const</span> obj = { a: 1, b: { c: 2 } };
+
+<span class="comment">// Shallow copies</span>
+<span class="keyword">const</span> s1 = { ...obj };
+<span class="keyword">const</span> s2 = Object.assign({}, obj);
+s1.b.c = 99; <span class="comment">// obj.b.c also changes! ❌</span>
+
+<span class="comment">// Deep copies</span>
+<span class="keyword">const</span> d1 = JSON.parse(JSON.stringify(obj)); <span class="comment">// simple, loses functions/Date</span>
+<span class="keyword">const</span> d2 = structuredClone(obj); <span class="comment">// modern, handles more types ✅</span>
+d1.b.c = 99; <span class="comment">// obj.b.c unchanged ✅</span></code></pre>
+  </div>
+</div>
+
+<div class="qa-card" data-q="Explain Call Apply and Bind">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q26</span>
+    <span class="q-text">Explain Call, Apply, and Bind</span>
+    <span class="difficulty hard">Hard</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p>All three explicitly set the value of <strong><code>this</code></strong> for a function call.</p>
+    <table>
+      <tr><th>Method</th><th>Invokes immediately</th><th>Arguments</th></tr>
+      <tr><td>call()</td><td>✅</td><td>Comma-separated</td></tr>
+      <tr><td>apply()</td><td>✅</td><td>Array</td></tr>
+      <tr><td>bind()</td><td>❌ (returns new fn)</td><td>Comma-separated</td></tr>
+    </table>
+    <pre><code><span class="keyword">function</span> <span class="func">greet</span>(greeting, punct) {
+  <span class="keyword">return</span> <span class="string">`${greeting}, ${this.name}${punct}`</span>;
+}
+<span class="keyword">const</span> user = { name: <span class="string">"Alice"</span> };
+
+<span class="func">greet</span>.call(user, <span class="string">"Hello"</span>, <span class="string">"!"</span>);    <span class="comment">// "Hello, Alice!"</span>
+<span class="func">greet</span>.apply(user, [<span class="string">"Hi"</span>, <span class="string">"?"</span>]);    <span class="comment">// "Hi, Alice?"</span>
+<span class="keyword">const</span> bound = <span class="func">greet</span>.bind(user, <span class="string">"Hey"</span>);
+<span class="func">bound</span>(<span class="string">"."</span>);                        <span class="comment">// "Hey, Alice."</span></code></pre>
+  </div>
+</div>
+
+<div class="qa-card" data-q="Implement Polyfill map filter reduce">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q27</span>
+    <span class="q-text">Implement Polyfill for map(), filter(), reduce()</span>
+    <span class="difficulty hard">Hard</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <pre><code><span class="comment">// Polyfill: map</span>
+Array.prototype.myMap = <span class="keyword">function</span>(callback) {
+  <span class="keyword">const</span> result = [];
+  <span class="keyword">for</span> (<span class="keyword">let</span> i = 0; i < <span class="keyword">this</span>.length; i++) {
+    result.push(<span class="func">callback</span>(<span class="keyword">this</span>[i], i, <span class="keyword">this</span>));
+  }
+  <span class="keyword">return</span> result;
+};
+
+<span class="comment">// Polyfill: filter</span>
+Array.prototype.myFilter = <span class="keyword">function</span>(callback) {
+  <span class="keyword">const</span> result = [];
+  <span class="keyword">for</span> (<span class="keyword">let</span> i = 0; i < <span class="keyword">this</span>.length; i++) {
+    <span class="keyword">if</span> (<span class="func">callback</span>(<span class="keyword">this</span>[i], i, <span class="keyword">this</span>)) result.push(<span class="keyword">this</span>[i]);
+  }
+  <span class="keyword">return</span> result;
+};
+
+<span class="comment">// Polyfill: reduce</span>
+Array.prototype.myReduce = <span class="keyword">function</span>(callback, initialValue) {
+  <span class="keyword">let</span> acc = initialValue !== undefined ? initialValue : <span class="keyword">this</span>[0];
+  <span class="keyword">let</span> start = initialValue !== undefined ? 0 : 1;
+  <span class="keyword">for</span> (<span class="keyword">let</span> i = start; i < <span class="keyword">this</span>.length; i++) {
+    acc = <span class="func">callback</span>(acc, <span class="keyword">this</span>[i], i, <span class="keyword">this</span>);
+  }
+  <span class="keyword">return</span> acc;
+};</code></pre>
+  </div>
+</div>
+
+<div class="qa-card" data-q="How does Garbage Collection work">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q28</span>
+    <span class="q-text">How does Garbage Collection work?</span>
+    <span class="difficulty hard">Hard</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p>JS automatically frees memory no longer needed using <strong>Mark-and-Sweep</strong> algorithm:</p>
+    <ol>
+      <li><strong>Mark phase:</strong> Start from roots (global, call stack), mark all reachable objects</li>
+      <li><strong>Sweep phase:</strong> Free all unmarked (unreachable) objects</li>
+    </ol>
+    <p>An object becomes eligible for GC when it has <strong>no more references</strong> pointing to it.</p>
+    <pre><code><span class="keyword">let</span> user = { name: <span class="string">"Alice"</span> };
+user = <span class="keyword">null</span>; <span class="comment">// original object is now unreachable → GC eligible</span>
+
+<span class="comment">// Circular reference (handled by modern GC):</span>
+<span class="keyword">let</span> a = {}; <span class="keyword">let</span> b = {};
+a.ref = b; b.ref = a;
+a = <span class="keyword">null</span>; b = <span class="keyword">null</span>; <span class="comment">// both collected despite circular refs</span></code></pre>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ SECTION 2 ═══ -->
+<div class="section-header" id="s2">
+  <span class="section-num">02</span>
+  <h2>React Fundamentals</h2>
+</div>
+
+<div class="qa-card" data-q="What is React Why React">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q1</span>
+    <span class="q-text">What is React? Why React?</span>
+    <span class="difficulty easy">Easy</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p>React is an <strong>open-source JavaScript library</strong> by Meta for building fast, interactive UIs using a component-based architecture.</p>
+    <p><strong>Why React?</strong></p>
+    <ul>
+      <li><strong>Virtual DOM</strong> – minimizes expensive real DOM operations</li>
+      <li><strong>Component-based</strong> – reusable, testable UI pieces</li>
+      <li><strong>Unidirectional data flow</strong> – predictable state management</li>
+      <li><strong>Huge ecosystem</strong> – Next.js, Redux, React Query, etc.</li>
+      <li><strong>React Native</strong> – same concepts for mobile development</li>
+      <li><strong>Strong community & job market</strong></li>
+    </ul>
+  </div>
+</div>
+
+<div class="qa-card" data-q="What is JSX">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q2</span>
+    <span class="q-text">What is JSX?</span>
+    <span class="difficulty easy">Easy</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p>JSX (JavaScript XML) is a <strong>syntax extension for JavaScript</strong> that lets you write HTML-like code inside JS. Babel compiles it to <code>React.createElement()</code> calls.</p>
+    <pre><code><span class="comment">// JSX</span>
+<span class="keyword">const</span> element = &lt;h1 className="title"&gt;Hello, React!&lt;/h1&gt;;
+
+<span class="comment">// Compiled to</span>
+<span class="keyword">const</span> element = React.createElement(<span class="string">'h1'</span>, { className: <span class="string">'title'</span> }, <span class="string">'Hello, React!'</span>);</code></pre>
+    <p><strong>JSX Rules:</strong> Must return a single root element, use <code>className</code> not <code>class</code>, self-close empty tags, wrap multi-line in parentheses, JS expressions go in <code>{}</code>.</p>
+  </div>
+</div>
+
+<div class="qa-card" data-q="Functional Component vs Class Component">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q3</span>
+    <span class="q-text">Functional Component vs Class Component?</span>
+    <span class="difficulty easy">Easy</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <table>
+      <tr><th>Feature</th><th>Functional</th><th>Class</th></tr>
+      <tr><td>Syntax</td><td>Function / Arrow fn</td><td>extends React.Component</td></tr>
+      <tr><td>State</td><td>useState hook</td><td>this.state</td></tr>
+      <tr><td>Lifecycle</td><td>useEffect</td><td>componentDidMount, etc.</td></tr>
+      <tr><td>this keyword</td><td>Not needed</td><td>Required</td></tr>
+      <tr><td>Performance</td><td>Slightly better</td><td>Slightly heavier</td></tr>
+      <tr><td>Preferred</td><td>✅ Yes (modern)</td><td>Legacy</td></tr>
+    </table>
+    <div class="note tip">React team recommends <strong>functional components with hooks</strong> for all new code.</div>
+  </div>
+</div>
+
+<div class="qa-card" data-q="What are Props What is State State vs Props">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q4</span>
+    <span class="q-text">What are Props? What is State? State vs Props?</span>
+    <span class="difficulty easy">Easy</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p><strong>Props:</strong> Data passed FROM parent TO child. Read-only. Immutable from child's perspective.</p>
+    <p><strong>State:</strong> Internal data managed BY the component. Mutable. Triggers re-render when changed.</p>
+    <table>
+      <tr><th></th><th>Props</th><th>State</th></tr>
+      <tr><td>Owned by</td><td>Parent</td><td>Component itself</td></tr>
+      <tr><td>Mutable</td><td>❌ (read-only)</td><td>✅</td></tr>
+      <tr><td>Causes re-render</td><td>When parent re-renders</td><td>When setState called</td></tr>
+    </table>
+    <pre><code><span class="keyword">function</span> <span class="func">Counter</span>({ initialCount }) { <span class="comment">// initialCount = prop</span>
+  <span class="keyword">const</span> [count, setCount] = useState(initialCount); <span class="comment">// state</span>
+  <span class="keyword">return</span> &lt;button onClick={() => setCount(c => c+1)}&gt;{count}&lt;/button&gt;;
+}</code></pre>
+  </div>
+</div>
+
+<div class="qa-card" data-q="What is Virtual DOM What is Real DOM">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q5</span>
+    <span class="q-text">What is Virtual DOM? What is Real DOM?</span>
+    <span class="difficulty easy">Easy</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p><strong>Real DOM:</strong> The browser's actual Document Object Model. Updating it is expensive — every change triggers reflow/repaint.</p>
+    <p><strong>Virtual DOM:</strong> A lightweight <em>in-memory representation</em> of the Real DOM. React's reconciliation process:</p>
+    <ol>
+      <li>State changes → new Virtual DOM tree created</li>
+      <li>React <strong>diffs</strong> new vs old Virtual DOM (diffing algorithm)</li>
+      <li>Only the <strong>changed nodes</strong> are updated in the Real DOM (patching)</li>
+    </ol>
+    <div class="note tip">Virtual DOM doesn't make React fast by itself — it makes DOM updates <em>smart and minimal</em>, avoiding unnecessary work.</div>
+  </div>
+</div>
+
+<div class="qa-card" data-q="Why key prop is important React Fragments Synthetic Events">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q6</span>
+    <span class="q-text">Why is the key prop important? React Fragments? Synthetic Events?</span>
+    <span class="difficulty easy">Easy</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p><strong>key prop:</strong> Helps React identify which list items changed, added, or removed. Without it, React re-renders the entire list unnecessarily.</p>
+    <pre><code>items.map(item => &lt;li key={item.id}&gt;{item.name}&lt;/li&gt;)</code></pre>
+    <div class="note danger">Never use array index as key if the list can reorder!</div>
+    <p><strong>React Fragments:</strong> Let you group elements without adding extra DOM nodes:</p>
+    <pre><code><span class="comment">// Both are equivalent</span>
+&lt;React.Fragment&gt;&lt;Child1 /&gt;&lt;Child2 /&gt;&lt;/React.Fragment&gt;
+&lt;&gt;&lt;Child1 /&gt;&lt;Child2 /&gt;&lt;/&gt;</code></pre>
+    <p><strong>Synthetic Events:</strong> React's cross-browser wrapper around native DOM events. Normalized to work consistently across browsers. Examples: <code>onClick</code>, <code>onChange</code>, <code>onSubmit</code>.</p>
+  </div>
+</div>
+
+<div class="qa-card" data-q="What is Reconciliation Diffing Algorithm">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q7</span>
+    <span class="q-text">What is Reconciliation? What is the Diffing Algorithm?</span>
+    <span class="difficulty medium">Medium</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p><strong>Reconciliation:</strong> The process by which React updates the DOM to match the Virtual DOM after state/prop changes.</p>
+    <p><strong>Diffing Algorithm</strong> (React's heuristics — O(n) not O(n³)):</p>
+    <ul>
+      <li><strong>Different element types</strong> → destroy old tree, build new</li>
+      <li><strong>Same element type</strong> → update only changed attributes</li>
+      <li><strong>Lists with keys</strong> → match by key, only update/move changed items</li>
+      <li>Components of the same type: re-render and diff recursively</li>
+    </ul>
+    <div class="note tip">This is why keys matter in lists — they let React reuse DOM nodes instead of recreating them.</div>
+  </div>
+</div>
+
+<div class="qa-card" data-q="What causes Re-renders">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q8</span>
+    <span class="q-text">What causes Re-renders?</span>
+    <span class="difficulty medium">Medium</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p>A React component re-renders when:</p>
+    <ul>
+      <li><strong>State changes</strong> – <code>setState</code> / <code>useState</code> setter called</li>
+      <li><strong>Props change</strong> – parent passes new props</li>
+      <li><strong>Parent re-renders</strong> – child re-renders too (by default)</li>
+      <li><strong>Context changes</strong> – consuming component re-renders</li>
+      <li><strong>forceUpdate()</strong> – class component method</li>
+    </ul>
+    <div class="note warn">Re-renders ≠ DOM updates. React might re-render but if the output is the same, no DOM update happens (VDom diff skips it).</div>
+  </div>
+</div>
+
+<div class="qa-card" data-q="Controlled Components Uncontrolled Components">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q9</span>
+    <span class="q-text">Controlled vs Uncontrolled Components?</span>
+    <span class="difficulty medium">Medium</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p><strong>Controlled:</strong> Form data is handled by React state. Single source of truth.</p>
+    <pre><code><span class="keyword">const</span> [value, setValue] = useState(<span class="string">""</span>);
+&lt;input value={value} onChange={e => setValue(e.target.value)} /&gt;</code></pre>
+    <p><strong>Uncontrolled:</strong> Form data managed by DOM itself. Use <code>useRef</code> to access values.</p>
+    <pre><code><span class="keyword">const</span> inputRef = useRef();
+&lt;input ref={inputRef} /&gt;
+<span class="comment">// Access: inputRef.current.value</span></code></pre>
+    <p>Use <strong>controlled</strong> for validation, real-time feedback. Use <strong>uncontrolled</strong> for simple forms or 3rd-party DOM libs.</p>
+  </div>
+</div>
+
+<div class="qa-card" data-q="What is Prop Drilling Context API Context API vs Redux">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q10</span>
+    <span class="q-text">Prop Drilling? Context API? Context API vs Redux?</span>
+    <span class="difficulty medium">Medium</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p><strong>Prop Drilling:</strong> Passing props through many component layers just to reach a deeply nested component. Makes code hard to maintain.</p>
+    <p><strong>Context API:</strong> React's built-in way to share data globally without prop drilling.</p>
+    <pre><code><span class="keyword">const</span> ThemeCtx = React.createContext(<span class="string">'light'</span>);
+<span class="comment">// Provider</span>
+&lt;ThemeCtx.Provider value="dark"&gt;&lt;App /&gt;&lt;/ThemeCtx.Provider&gt;
+<span class="comment">// Consumer</span>
+<span class="keyword">const</span> theme = useContext(ThemeCtx);</code></pre>
+    <table>
+      <tr><th></th><th>Context API</th><th>Redux</th></tr>
+      <tr><td>Setup</td><td>Minimal</td><td>Boilerplate</td></tr>
+      <tr><td>DevTools</td><td>Basic</td><td>Excellent (time-travel)</td></tr>
+      <tr><td>Performance</td><td>Re-renders all consumers</td><td>Fine-grained subscriptions</td></tr>
+      <tr><td>Best for</td><td>Theme, auth, locale</td><td>Complex global state</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="qa-card" data-q="What is React.memo Error Boundaries Portals Higher Order Components Custom Hooks">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q11</span>
+    <span class="q-text">React.memo, Error Boundaries, Portals, HOCs, Custom Hooks?</span>
+    <span class="difficulty medium">Medium</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p><strong>React.memo:</strong> HOC that memoizes a component — skips re-render if props haven't changed.</p>
+    <pre><code><span class="keyword">const</span> MemoComp = React.memo(({ name }) => &lt;div&gt;{name}&lt;/div&gt;);
+<span class="comment">// Only re-renders if 'name' changes</span></code></pre>
+    <p><strong>Error Boundaries:</strong> Class components that catch JS errors in their child tree. No functional equivalent (use react-error-boundary lib).</p>
+    <p><strong>Portals:</strong> Render children outside the parent DOM hierarchy (e.g., modals, tooltips).</p>
+    <pre><code>ReactDOM.createPortal(&lt;Modal /&gt;, document.getElementById(<span class="string">'portal-root'</span>))</code></pre>
+    <p><strong>HOCs:</strong> Function that takes a component and returns an enhanced component (e.g., <code>withAuth(Component)</code>).</p>
+    <p><strong>Custom Hooks:</strong> Functions starting with <code>use</code> that encapsulate reusable stateful logic using built-in hooks.</p>
+  </div>
+</div>
+
+<div class="qa-card" data-q="Explain React Fiber Architecture Concurrent Rendering Suspense Hydration SSR CSR Server Components">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q12</span>
+    <span class="q-text">React Fiber, Concurrent Rendering, Suspense, Hydration, SSR vs CSR, Server Components</span>
+    <span class="difficulty hard">Hard</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p><strong>React Fiber:</strong> React 16's complete rewrite of the reconciliation engine. Enables <em>incremental rendering</em> — breaking work into chunks, pausing, prioritizing, and resuming.</p>
+    <p><strong>Concurrent Rendering:</strong> React can work on multiple tasks simultaneously, interrupting low-priority renders for high-priority updates (e.g., user input). Enabled by <code>startTransition</code>, <code>useTransition</code>.</p>
+    <p><strong>Suspense:</strong> Lets components "wait" for async data before rendering. Works with lazy loading and data fetching.</p>
+    <pre><code>&lt;Suspense fallback={&lt;Spinner /&gt;}&gt;
+  &lt;LazyComponent /&gt;
+&lt;/Suspense&gt;</code></pre>
+    <p><strong>Hydration:</strong> Process of attaching React's event listeners to server-rendered HTML. The HTML already exists, React just "activates" it.</p>
+    <table>
+      <tr><th></th><th>SSR</th><th>CSR</th></tr>
+      <tr><td>Initial load</td><td>Fast (HTML ready)</td><td>Slow (blank shell)</td></tr>
+      <tr><td>SEO</td><td>✅ Excellent</td><td>❌ Poor</td></tr>
+      <tr><td>Interactivity</td><td>After hydration</td><td>Immediate after JS loads</td></tr>
+      <tr><td>Server load</td><td>Higher</td><td>Lower</td></tr>
+    </table>
+    <p><strong>Server Components (RSC):</strong> React components that run only on the server. Zero JS bundle impact. Can directly access databases. Cannot use hooks or browser APIs.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ SECTION 3 ═══ -->
+<div class="section-header" id="s3">
+  <span class="section-num">03</span>
+  <h2>React Hooks</h2>
+</div>
+
+<div class="qa-card" data-q="What is useState How does useState work">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q1</span>
+    <span class="q-text">What is useState? How does it work?</span>
+    <span class="difficulty easy">Easy</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p><code>useState</code> is a hook that lets you add <strong>state to functional components</strong>. Returns an array of [current value, setter function].</p>
+    <pre><code><span class="keyword">const</span> [count, setCount] = useState(0);
+
+<span class="comment">// Direct update</span>
+setCount(5);
+
+<span class="comment">// Functional update (safe when new state depends on old)</span>
+setCount(prev => prev + 1);
+
+<span class="comment">// Object state</span>
+<span class="keyword">const</span> [user, setUser] = useState({ name: <span class="string">""</span>, age: 0 });
+setUser(prev => ({ ...prev, name: <span class="string">"Alice"</span> }));</code></pre>
+    <div class="note warn">State updates are <strong>asynchronous</strong> and <strong>batched</strong> in React 18. Don't read state immediately after setting.</div>
+    <p>Internally, useState uses a linked list of hooks tied to the component's fiber. Each render, React reads from the same position in the list — hence hooks must always be called in the same order.</p>
+  </div>
+</div>
+
+<div class="qa-card" data-q="What is useEffect Dependency Array useEffect Lifecycle">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q2</span>
+    <span class="q-text">What is useEffect? Dependency Array? useEffect Lifecycle?</span>
+    <span class="difficulty easy">Easy</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p><code>useEffect</code> lets you perform <strong>side effects</strong> in functional components (data fetching, subscriptions, DOM mutations).</p>
+    <pre><code><span class="comment">// Runs after every render</span>
+useEffect(() => { ... });
+
+<span class="comment">// Runs once on mount (componentDidMount)</span>
+useEffect(() => { ... }, []);
+
+<span class="comment">// Runs when deps change (componentDidUpdate)</span>
+useEffect(() => { ... }, [userId]);
+
+<span class="comment">// Cleanup (componentWillUnmount)</span>
+useEffect(() => {
+  <span class="keyword">const</span> sub = subscribe();
+  <span class="keyword">return</span> () => sub.unsubscribe(); <span class="comment">// runs before next effect or unmount</span>
+}, []);</code></pre>
+    <table>
+      <tr><th>Dependency Array</th><th>Behavior</th></tr>
+      <tr><td>None</td><td>After every render</td></tr>
+      <tr><td>[]</td><td>Only on mount</td></tr>
+      <tr><td>[a, b]</td><td>When a or b changes</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="qa-card" data-q="What is useRef useRef vs useState">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q3</span>
+    <span class="q-text">What is useRef? useRef vs useState?</span>
+    <span class="difficulty easy">Easy</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p><code>useRef</code> returns a mutable ref object whose <code>.current</code> property persists across renders <strong>without causing re-renders</strong>.</p>
+    <p><strong>Two main uses:</strong></p>
+    <pre><code><span class="comment">// 1. DOM access</span>
+<span class="keyword">const</span> inputRef = useRef(null);
+&lt;input ref={inputRef} /&gt;
+<span class="comment">// inputRef.current.focus()</span>
+
+<span class="comment">// 2. Mutable value (like instance variable)</span>
+<span class="keyword">const</span> timerRef = useRef(null);
+timerRef.current = setInterval(...);
+<span class="comment">// Won't cause re-render when changed</span></code></pre>
+    <table>
+      <tr><th></th><th>useState</th><th>useRef</th></tr>
+      <tr><td>Triggers re-render</td><td>✅ Yes</td><td>❌ No</td></tr>
+      <tr><td>Value persists</td><td>✅</td><td>✅</td></tr>
+      <tr><td>Use for</td><td>UI state</td><td>DOM refs, timers, prev values</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="qa-card" data-q="useMemo useCallback useContext useReducer">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q4</span>
+    <span class="q-text">useMemo, useCallback, useContext, useReducer?</span>
+    <span class="difficulty medium">Medium</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p><strong>useMemo:</strong> Memoizes a <em>computed value</em>. Recalculates only when deps change.</p>
+    <pre><code><span class="keyword">const</span> expensiveResult = useMemo(() => heavyCalc(data), [data]);</code></pre>
+    <p><strong>useCallback:</strong> Memoizes a <em>function reference</em>. Prevents child re-renders when passing callbacks as props.</p>
+    <pre><code><span class="keyword">const</span> handleClick = useCallback(() => doSomething(id), [id]);</code></pre>
+    <p><strong>useContext:</strong> Consumes a React context value.</p>
+    <pre><code><span class="keyword">const</span> theme = useContext(ThemeContext);</code></pre>
+    <p><strong>useReducer:</strong> Alternative to useState for complex state logic. Like Redux but local.</p>
+    <pre><code><span class="keyword">const</span> [state, dispatch] = useReducer(reducer, initialState);
+<span class="comment">// dispatch({ type: 'INCREMENT' })</span></code></pre>
+    <table>
+      <tr><th></th><th>useMemo</th><th>useCallback</th></tr>
+      <tr><td>Memoizes</td><td>Value</td><td>Function</td></tr>
+      <tr><td>Returns</td><td>Computed result</td><td>Stable function ref</td></tr>
+    </table>
+  </div>
+</div>
+
+<div class="qa-card" data-q="useLayoutEffect vs useEffect useImperativeHandle forwardRef Hook Rules">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q5</span>
+    <span class="q-text">useLayoutEffect vs useEffect, useImperativeHandle, forwardRef, Hook Rules?</span>
+    <span class="difficulty hard">Hard</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <table>
+      <tr><th></th><th>useEffect</th><th>useLayoutEffect</th></tr>
+      <tr><td>Timing</td><td>After paint (async)</td><td>After DOM, before paint (sync)</td></tr>
+      <tr><td>Use for</td><td>Data fetch, subscriptions</td><td>DOM measurements, animations</td></tr>
+      <tr><td>SSR</td><td>✅ Safe</td><td>⚠️ Warns on server</td></tr>
+    </table>
+    <p><strong>forwardRef:</strong> Lets a parent access a child's DOM node via ref.</p>
+    <pre><code><span class="keyword">const</span> Input = React.forwardRef((props, ref) => (
+  &lt;input ref={ref} {...props} /&gt;
+));</code></pre>
+    <p><strong>useImperativeHandle:</strong> Customizes the ref value exposed to parent.</p>
+    <pre><code>useImperativeHandle(ref, () => ({
+  focus: () => inputRef.current.focus(),
+  clear: () => inputRef.current.value = <span class="string">""</span>
+}));</code></pre>
+    <p><strong>Hook Rules:</strong></p>
+    <ul>
+      <li>Only call hooks at the <strong>top level</strong> (not inside loops, conditions, or nested functions)</li>
+      <li>Only call hooks from <strong>React function components</strong> or custom hooks</li>
+    </ul>
+    <div class="note">Why top level? React tracks hooks by their <em>call order</em>. Conditional calls would break the order between renders.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ SECTION 4 ═══ -->
+<div class="section-header" id="s4">
+  <span class="section-num">04</span>
+  <h2>Redux & State Management</h2>
+</div>
+
+<div class="qa-card" data-q="What is Redux Why Redux Redux Architecture Action Reducer Store Dispatch Selector">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q1</span>
+    <span class="q-text">What is Redux? Architecture, Core Concepts?</span>
+    <span class="difficulty medium">Medium</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p>Redux is a <strong>predictable state container</strong> for JavaScript apps. It centralizes application state and state logic, making state changes predictable and debuggable.</p>
+    <p><strong>Three Principles:</strong> Single source of truth, State is read-only, Changes via pure functions (reducers).</p>
+    <table>
+      <tr><th>Concept</th><th>Description</th></tr>
+      <tr><td><strong>Store</strong></td><td>Single JS object holding all app state</td></tr>
+      <tr><td><strong>Action</strong></td><td>Plain object describing what happened: <code>{type, payload}</code></td></tr>
+      <tr><td><strong>Reducer</strong></td><td>Pure function: <code>(state, action) => newState</code></td></tr>
+      <tr><td><strong>Dispatch</strong></td><td>Sends an action to the store</td></tr>
+      <tr><td><strong>Selector</strong></td><td>Function to extract specific state: <code>state => state.user</code></td></tr>
+    </table>
+    <pre><code><span class="comment">// Flow: UI → dispatch(action) → reducer → new state → UI re-renders</span>
+dispatch({ type: <span class="string">'counter/increment'</span>, payload: 1 });</code></pre>
+  </div>
+</div>
+
+<div class="qa-card" data-q="Redux Toolkit createSlice createAsyncThunk Middleware Redux Thunk Redux Saga">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q2</span>
+    <span class="q-text">Redux Toolkit, createSlice, createAsyncThunk, Middleware, Thunk, Saga?</span>
+    <span class="difficulty medium">Medium</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p><strong>Redux Toolkit (RTK):</strong> Official, recommended way to write Redux. Reduces boilerplate significantly.</p>
+    <pre><code><span class="comment">// createSlice – auto-generates actions and reducer</span>
+<span class="keyword">const</span> counterSlice = createSlice({
+  name: <span class="string">'counter'</span>,
+  initialState: { value: 0 },
+  reducers: {
+    increment: state => { state.value += 1; }, <span class="comment">// Immer under the hood</span>
+    decrement: state => { state.value -= 1; },
+  }
+});
+<span class="keyword">export const</span> { increment, decrement } = counterSlice.actions;
+
+<span class="comment">// createAsyncThunk – for async actions</span>
+<span class="keyword">const</span> fetchUser = createAsyncThunk(<span class="string">'user/fetch'</span>, <span class="keyword">async</span> (id) => {
+  <span class="keyword">const</span> res = <span class="keyword">await</span> fetch(<span class="string">`/api/users/${id}`</span>);
+  <span class="keyword">return</span> res.json();
+});</code></pre>
+    <p><strong>Middleware:</strong> Sits between dispatch and reducer. Use cases: logging, async operations, crash reporting.</p>
+    <p><strong>Redux Thunk:</strong> Allows dispatching functions (for async). Simple, included in RTK.</p>
+    <p><strong>Redux Saga:</strong> Uses generator functions for complex async flows (race conditions, cancellation). More powerful but complex.</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ SECTION 5 ═══ -->
+<div class="section-header" id="s5">
+  <span class="section-num">05</span>
+  <h2>React Router</h2>
+</div>
+
+<div class="qa-card" data-q="React Router BrowserRouter Routes Route Nested Dynamic useNavigate useParams Protected Lazy">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q1</span>
+    <span class="q-text">React Router – Complete Guide (BrowserRouter, Routes, Protected, Lazy)?</span>
+    <span class="difficulty medium">Medium</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p><strong>React Router v6</strong> is the standard routing library for React SPAs.</p>
+    <pre><code><span class="comment">// Basic setup</span>
+&lt;BrowserRouter&gt;
+  &lt;Routes&gt;
+    &lt;Route path=<span class="string">"/"</span> element={&lt;Home /&gt;} /&gt;
+    &lt;Route path=<span class="string">"/users/:id"</span> element={&lt;UserDetail /&gt;} /&gt; <span class="comment">// Dynamic</span>
+    &lt;Route path=<span class="string">"/dashboard"</span> element={&lt;Layout /&gt;}&gt;          <span class="comment">// Nested</span>
+      &lt;Route index element={&lt;Dashboard /&gt;} /&gt;
+    &lt;/Route&gt;
+  &lt;/Routes&gt;
+&lt;/BrowserRouter&gt;
+
+<span class="comment">// Hooks</span>
+<span class="keyword">const</span> navigate = useNavigate();
+navigate(<span class="string">'/home'</span>); <span class="comment">// programmatic navigation</span>
+
+<span class="keyword">const</span> { id } = useParams(); <span class="comment">// /users/42 → id = "42"</span>
+
+<span class="comment">// Protected Route pattern</span>
+<span class="keyword">const</span> ProtectedRoute = ({ children }) => {
+  <span class="keyword">const</span> isAuth = useAuth();
+  <span class="keyword">return</span> isAuth ? children : &lt;Navigate to=<span class="string">"/login"</span> /&gt;;
+};
+
+<span class="comment">// Lazy loading routes</span>
+<span class="keyword">const</span> Dashboard = React.lazy(() => import(<span class="string">'./Dashboard'</span>));
+&lt;Suspense fallback={&lt;Spinner /&gt;}&gt;
+  &lt;Route path=<span class="string">"/dashboard"</span> element={&lt;Dashboard /&gt;} /&gt;
+&lt;/Suspense&gt;</code></pre>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ SECTION 6 ═══ -->
+<div class="section-header" id="s6">
+  <span class="section-num">06</span>
+  <h2>Performance Optimization</h2>
+</div>
+
+<div class="qa-card" data-q="React.memo useMemo useCallback Code Splitting Lazy Loading Tree Shaking Virtualized Lists">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q1</span>
+    <span class="q-text">Performance Optimization Techniques – Complete Guide</span>
+    <span class="difficulty medium">Medium</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p><strong>Preventing unnecessary re-renders:</strong></p>
+    <ul>
+      <li><strong>React.memo</strong> – memoize component (skips re-render if props unchanged)</li>
+      <li><strong>useMemo</strong> – memoize expensive computations</li>
+      <li><strong>useCallback</strong> – memoize callback functions passed as props</li>
+    </ul>
+    <p><strong>Bundle size reduction:</strong></p>
+    <ul>
+      <li><strong>Code Splitting</strong> – split bundle into chunks loaded on demand</li>
+      <li><strong>Lazy Loading</strong> – <code>React.lazy()</code> + <code>Suspense</code> for components/routes</li>
+      <li><strong>Tree Shaking</strong> – removes unused exports (Webpack/Rollup do this automatically with ES modules)</li>
+    </ul>
+    <p><strong>Large lists:</strong></p>
+    <ul>
+      <li><strong>Virtualization</strong> – only render visible items (<code>react-window</code>, <code>react-virtual</code>)</li>
+      <li><strong>Pagination</strong> – load fixed number of items</li>
+      <li><strong>Infinite Scroll</strong> – load more on scroll</li>
+    </ul>
+    <pre><code><span class="comment">// react-window example</span>
+<span class="keyword">import</span> { FixedSizeList } <span class="keyword">from</span> <span class="string">'react-window'</span>;
+&lt;FixedSizeList height={400} itemCount={10000} itemSize={35}&gt;
+  {({ index, style }) => &lt;div style={style}&gt;Item {index}&lt;/div&gt;}
+&lt;/FixedSizeList&gt;</code></pre>
+    <div class="note tip">Use <strong>React DevTools Profiler</strong> to identify which components are slow and why before optimizing prematurely.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ SECTION 7 ═══ -->
+<div class="section-header" id="s7">
+  <span class="section-num">07</span>
+  <h2>API & Authentication</h2>
+</div>
+
+<div class="qa-card" data-q="How do you call APIs in React Axios Fetch Error Handling Loading State JWT Authentication Refresh Tokens Role-Based Access API Interceptors">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q1</span>
+    <span class="q-text">API Calls, Axios vs Fetch, JWT, Refresh Tokens, RBAC, Interceptors?</span>
+    <span class="difficulty medium">Medium</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p><strong>Axios vs Fetch:</strong></p>
+    <table>
+      <tr><th></th><th>Axios</th><th>Fetch</th></tr>
+      <tr><td>JSON auto-parse</td><td>✅</td><td>Manual .json()</td></tr>
+      <tr><td>Request cancellation</td><td>✅ Built-in</td><td>AbortController</td></tr>
+      <tr><td>Interceptors</td><td>✅</td><td>Manual wrapper</td></tr>
+      <tr><td>Error on 4xx/5xx</td><td>✅ Auto</td><td>❌ Must check ok</td></tr>
+      <tr><td>Bundle size</td><td>~14kb</td><td>Native (0kb)</td></tr>
+    </table>
+    <pre><code><span class="comment">// Axios interceptor for JWT + refresh token</span>
+axios.interceptors.request.use(config => {
+  config.headers.Authorization = <span class="string">`Bearer ${getToken()}`</span>;
+  <span class="keyword">return</span> config;
+});
+axios.interceptors.response.use(null, <span class="keyword">async</span> error => {
+  <span class="keyword">if</span> (error.response.status === <span class="num">401</span>) {
+    <span class="keyword">const</span> newToken = <span class="keyword">await</span> refreshAccessToken();
+    error.config.headers.Authorization = <span class="string">`Bearer ${newToken}`</span>;
+    <span class="keyword">return</span> axios(error.config); <span class="comment">// retry</span>
+  }
+});</code></pre>
+    <p><strong>JWT Flow:</strong> Login → server returns access token (short-lived) + refresh token (long-lived) → store access token in memory, refresh token in httpOnly cookie → auto-refresh when access token expires.</p>
+    <p><strong>RBAC (Role-Based Access Control):</strong> Decode JWT, check user role, conditionally render UI and protect routes.</p>
+    <pre><code><span class="keyword">const</span> PrivateRoute = ({ roles, children }) => {
+  <span class="keyword">const</span> { user } = useAuth();
+  <span class="keyword">if</span> (!roles.includes(user.role)) <span class="keyword">return</span> &lt;Unauthorized /&gt;;
+  <span class="keyword">return</span> children;
+};</code></pre>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ SECTION 8 ═══ -->
+<div class="section-header" id="s8">
+  <span class="section-num">08</span>
+  <h2>React Coding Questions</h2>
+</div>
+
+<div class="qa-card" data-q="Counter App Todo App Search Filter Debounced Search Custom useDebounce useFetch Hook">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q1</span>
+    <span class="q-text">Common Implementations: Counter, Todo, Debounced Search, Custom Hooks</span>
+    <span class="difficulty medium">Medium</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <pre><code><span class="comment">// ── Counter ──</span>
+<span class="keyword">function</span> <span class="func">Counter</span>() {
+  <span class="keyword">const</span> [count, setCount] = useState(0);
+  <span class="keyword">return</span> (
+    &lt;div&gt;
+      &lt;button onClick={() => setCount(c => c - 1)}&gt;-&lt;/button&gt;
+      &lt;span&gt;{count}&lt;/span&gt;
+      &lt;button onClick={() => setCount(c => c + 1)}&gt;+&lt;/button&gt;
+    &lt;/div&gt;
+  );
+}
+
+<span class="comment">// ── Todo App ──</span>
+<span class="keyword">function</span> <span class="func">Todo</span>() {
+  <span class="keyword">const</span> [todos, setTodos] = useState([]);
+  <span class="keyword">const</span> [input, setInput] = useState(<span class="string">""</span>);
+  <span class="keyword">const</span> add = () => {
+    <span class="keyword">if</span> (!input.trim()) <span class="keyword">return</span>;
+    setTodos(prev => [...prev, { id: Date.now(), text: input, done: <span class="keyword">false</span> }]);
+    setInput(<span class="string">""</span>);
+  };
+  <span class="keyword">const</span> toggle = (id) => setTodos(prev =>
+    prev.map(t => t.id === id ? { ...t, done: !t.done } : t)
+  );
+  <span class="keyword">return</span> ( <span class="comment">/* JSX with input, add button, list */</span> );
+}
+
+<span class="comment">// ── Custom useDebounce Hook ──</span>
+<span class="keyword">function</span> <span class="func">useDebounce</span>(value, delay = 500) {
+  <span class="keyword">const</span> [debounced, setDebounced] = useState(value);
+  useEffect(() => {
+    <span class="keyword">const</span> timer = setTimeout(() => setDebounced(value), delay);
+    <span class="keyword">return</span> () => clearTimeout(timer);
+  }, [value, delay]);
+  <span class="keyword">return</span> debounced;
+}
+<span class="comment">// Usage: const debouncedSearch = useDebounce(searchTerm, 300);</span>
+
+<span class="comment">// ── Custom useFetch Hook ──</span>
+<span class="keyword">function</span> <span class="func">useFetch</span>(url) {
+  <span class="keyword">const</span> [data, setData] = useState(null);
+  <span class="keyword">const</span> [loading, setLoading] = useState(<span class="keyword">true</span>);
+  <span class="keyword">const</span> [error, setError] = useState(null);
+  useEffect(() => {
+    <span class="keyword">const</span> controller = <span class="keyword">new</span> AbortController();
+    fetch(url, { signal: controller.signal })
+      .then(r => r.json())
+      .then(setData)
+      .catch(e => { <span class="keyword">if</span> (e.name !== <span class="string">'AbortError'</span>) setError(e); })
+      .finally(() => setLoading(<span class="keyword">false</span>));
+    <span class="keyword">return</span> () => controller.abort();
+  }, [url]);
+  <span class="keyword">return</span> { data, loading, error };
+}</code></pre>
+  </div>
+</div>
+
+<div class="qa-card" data-q="Pagination Infinite Scroll Accordion Modal Tabs">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q2</span>
+    <span class="q-text">Pagination, Infinite Scroll, Accordion, Modal, Tabs</span>
+    <span class="difficulty medium">Medium</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <pre><code><span class="comment">// ── Pagination ──</span>
+<span class="keyword">function</span> <span class="func">Pagination</span>({ total, perPage, current, onPageChange }) {
+  <span class="keyword">const</span> pages = Math.ceil(total / perPage);
+  <span class="keyword">return</span> Array.from({ length: pages }, (_, i) => (
+    &lt;button key={i+1} onClick={() => onPageChange(i+1)}
+      disabled={current === i+1}&gt;{i+1}&lt;/button&gt;
+  ));
+}
+
+<span class="comment">// ── Infinite Scroll (IntersectionObserver) ──</span>
+<span class="keyword">function</span> <span class="func">InfiniteList</span>() {
+  <span class="keyword">const</span> [items, setItems] = useState([]);
+  <span class="keyword">const</span> sentinel = useRef();
+  useEffect(() => {
+    <span class="keyword">const</span> obs = <span class="keyword">new</span> IntersectionObserver(([entry]) => {
+      <span class="keyword">if</span> (entry.isIntersecting) fetchMore().then(more =>
+        setItems(prev => [...prev, ...more])
+      );
+    });
+    obs.observe(sentinel.current);
+    <span class="keyword">return</span> () => obs.disconnect();
+  }, []);
+  <span class="keyword">return</span> (&lt;div&gt;{items.map(i => &lt;Item key={i.id} {...i}/&gt;)}&lt;div ref={sentinel}/&gt;&lt;/div&gt;);
+}
+
+<span class="comment">// ── Accordion ──</span>
+<span class="keyword">function</span> <span class="func">Accordion</span>({ items }) {
+  <span class="keyword">const</span> [open, setOpen] = useState(null);
+  <span class="keyword">return</span> items.map((item, i) => (
+    &lt;div key={i}&gt;
+      &lt;button onClick={() => setOpen(open === i ? null : i)}&gt;{item.title}&lt;/button&gt;
+      {open === i &amp;&amp; &lt;div&gt;{item.content}&lt;/div&gt;}
+    &lt;/div&gt;
+  ));
+}
+
+<span class="comment">// ── Modal ──</span>
+<span class="keyword">function</span> <span class="func">Modal</span>({ isOpen, onClose, children }) {
+  <span class="keyword">if</span> (!isOpen) <span class="keyword">return</span> null;
+  <span class="keyword">return</span> ReactDOM.createPortal(
+    &lt;div className="overlay" onClick={onClose}&gt;
+      &lt;div className="modal" onClick={e => e.stopPropagation()}&gt;
+        {children}
+        &lt;button onClick={onClose}&gt;×&lt;/button&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;,
+    document.body
+  );
+}</code></pre>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ SECTION 9 ═══ -->
+<div class="section-header" id="s9">
+  <span class="section-num">09</span>
+  <h2>JavaScript Output Questions</h2>
+</div>
+
+<div class="qa-card" data-q="Hoisting Output Closure Output Promise Output Event Loop Output Async Await setTimeout Call Stack var let Prototype this Keyword Output Questions">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q1</span>
+    <span class="q-text">Classic JS Output Questions with Explanations</span>
+    <span class="difficulty hard">Hard</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <pre><code><span class="comment">// ── Hoisting ──</span>
+console.log(x); <span class="comment">// undefined</span>
+<span class="keyword">var</span> x = 5;
+console.log(x); <span class="comment">// 5</span>
+
+<span class="comment">// ── Closure in loop ──</span>
+<span class="keyword">for</span> (<span class="keyword">var</span> i = 0; i &lt; 3; i++) {
+  setTimeout(() => console.log(i), 0);
+}
+<span class="comment">// Output: 3, 3, 3 (var is function-scoped, shared)</span>
+<span class="comment">// Fix with let: 0, 1, 2 (each iteration has own binding)</span>
+
+<span class="comment">// ── Event Loop ──</span>
+console.log(<span class="string">'start'</span>);
+setTimeout(() => console.log(<span class="string">'timeout'</span>), 0);
+Promise.resolve().then(() => console.log(<span class="string">'promise'</span>));
+console.log(<span class="string">'end'</span>);
+<span class="comment">// start → end → promise → timeout</span>
+
+<span class="comment">// ── Async/Await ──</span>
+<span class="keyword">async function</span> <span class="func">main</span>() {
+  console.log(<span class="string">'A'</span>);
+  <span class="keyword">await</span> Promise.resolve();
+  console.log(<span class="string">'B'</span>);
+}
+main();
+console.log(<span class="string">'C'</span>);
+<span class="comment">// A → C → B (await yields to the microtask queue)</span>
+
+<span class="comment">// ── this ──</span>
+<span class="keyword">const</span> obj = {
+  name: <span class="string">"Alice"</span>,
+  getName: <span class="keyword">function</span>() { <span class="keyword">return this</span>.name; },
+  getNameArrow: () => <span class="keyword">this</span>.name
+};
+obj.getName();      <span class="comment">// "Alice"</span>
+obj.getNameArrow(); <span class="comment">// undefined (arrow has no own this)</span>
+
+<span class="comment">// ── Prototype ──</span>
+<span class="keyword">function</span> <span class="func">Foo</span>() {}
+<span class="keyword">const</span> f = <span class="keyword">new</span> Foo();
+console.log(f <span class="keyword">instanceof</span> Foo);  <span class="comment">// true</span>
+console.log(typeof Foo.prototype); <span class="comment">// "object"</span></code></pre>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ SECTION 10 ═══ -->
+<div class="section-header" id="s10">
+  <span class="section-num">10</span>
+  <h2>React Output Questions</h2>
+</div>
+
+<div class="qa-card" data-q="useState Batching useEffect Dependencies React.memo Behavior useCallback useMemo Re-render Strict Mode Context Update">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q1</span>
+    <span class="q-text">React Tricky Behaviors: Batching, Memoization, Strict Mode, Context</span>
+    <span class="difficulty hard">Hard</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <pre><code><span class="comment">// ── useState Batching (React 18) ──</span>
+<span class="comment">// Multiple setStates in same event handler → ONE re-render</span>
+<span class="keyword">const</span> handleClick = () => {
+  setA(1);
+  setB(2);
+  setC(3); <span class="comment">// Only 1 re-render in React 18 (batched automatically)</span>
+};
+
+<span class="comment">// ── useEffect dependency pitfall ──</span>
+<span class="keyword">const</span> [count, setCount] = useState(0);
+useEffect(() => {
+  <span class="keyword">const</span> id = setInterval(() => {
+    setCount(count + 1); <span class="comment">// ❌ stale closure, always adds 1 to initial value</span>
+    setCount(c => c + 1); <span class="comment">// ✅ functional update, always correct</span>
+  }, 1000);
+  <span class="keyword">return</span> () => clearInterval(id);
+}, []);
+
+<span class="comment">// ── React.memo doesn't help with object props ──</span>
+<span class="keyword">const</span> Child = React.memo(({ style }) => &lt;div style={style}&gt;...&lt;/div&gt;);
+<span class="comment">// ❌ re-renders every time because {color:'red'} is new object each render</span>
+&lt;Child style={{ color: <span class="string">'red'</span> }} /&gt;
+<span class="comment">// ✅ Fix: useMemo or move object outside component</span>
+
+<span class="comment">// ── Strict Mode double-invocation ──</span>
+<span class="comment">// React.StrictMode calls render + effects TWICE in dev</span>
+<span class="comment">// to detect side effects. Normal in development, not production.</span>
+
+<span class="comment">// ── Context update ──</span>
+<span class="comment">// ALL consumers re-render when context value changes</span>
+<span class="comment">// even if their slice of data didn't change</span>
+<span class="comment">// Fix: split contexts or use useMemo on context value</span>
+<span class="keyword">const</span> value = useMemo(() => ({ user, setUser }), [user]);</code></pre>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ SECTION 11 ═══ -->
+<div class="section-header" id="s11">
+  <span class="section-num">11</span>
+  <h2>System Design & Project Discussion</h2>
+</div>
+
+<div class="qa-card" data-q="Project Architecture folder structure Why React How are components organized">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q1</span>
+    <span class="q-text">Project Architecture, Folder Structure, Component Organization?</span>
+    <span class="difficulty medium">Medium</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p><strong>Recommended Feature-First Structure:</strong></p>
+    <pre><code>src/
+├── components/      <span class="comment">// Shared, reusable UI components</span>
+│   ├── Button/
+│   ├── Modal/
+│   └── Input/
+├── features/        <span class="comment">// Feature-based modules</span>
+│   ├── auth/
+│   │   ├── components/
+│   │   ├── hooks/
+│   │   ├── store/
+│   │   └── api.js
+│   └── dashboard/
+├── hooks/           <span class="comment">// Global custom hooks</span>
+├── services/        <span class="comment">// API layer (axios instances, endpoints)</span>
+├── store/           <span class="comment">// Redux store setup</span>
+├── utils/           <span class="comment">// Helper functions</span>
+├── pages/           <span class="comment">// Route-level components</span>
+└── App.jsx</code></pre>
+    <p><strong>Why React?</strong> Component reusability, VirtualDOM performance, huge ecosystem, team familiarity, React Native for mobile.</p>
+  </div>
+</div>
+
+<div class="qa-card" data-q="Why Redux Why not Context API How do you share state State Management decision">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q2</span>
+    <span class="q-text">Why Redux? Why not Context API? How do you share state?</span>
+    <span class="difficulty medium">Medium</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p><strong>Use Redux when:</strong></p>
+    <ul>
+      <li>Complex state with many actions (shopping cart, dashboards)</li>
+      <li>Need time-travel debugging / Redux DevTools</li>
+      <li>Multiple components far apart need same state</li>
+      <li>Complex async workflows (Saga/Thunk)</li>
+    </ul>
+    <p><strong>Use Context API when:</strong></p>
+    <ul>
+      <li>Simple, low-frequency updates (theme, locale, auth status)</li>
+      <li>Small to medium apps</li>
+      <li>Want to avoid extra dependencies</li>
+    </ul>
+    <p><strong>Modern alternatives:</strong> Zustand, Jotai, Recoil (simpler than Redux), TanStack Query (server state).</p>
+  </div>
+</div>
+
+<div class="qa-card" data-q="How do you structure API calls handle failures avoid duplicate requests Authentication JWT Protected Routes Role Based">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q3</span>
+    <span class="q-text">API Layer, Failures, Deduplication, JWT Flow, Protected Routes?</span>
+    <span class="difficulty medium">Medium</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p><strong>API Layer best practices:</strong></p>
+    <ul>
+      <li>Centralize axios instance with base URL and interceptors</li>
+      <li>Use TanStack Query to avoid duplicate requests (request deduplication built-in)</li>
+      <li>Handle errors globally with interceptors + local error boundaries</li>
+    </ul>
+    <pre><code><span class="comment">// Centralized axios instance</span>
+<span class="keyword">const</span> api = axios.create({ baseURL: process.env.REACT_APP_API_URL });
+api.interceptors.request.use(addAuthToken);
+api.interceptors.response.use(null, handleError);</code></pre>
+    <p><strong>JWT Best Practices:</strong> Store access token in memory (not localStorage), refresh token in httpOnly cookie, auto-refresh before expiry.</p>
+  </div>
+</div>
+
+<div class="qa-card" data-q="How did you optimize performance reduce bundle size handle large lists scale to 100k users large codebase onboard developers">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q4</span>
+    <span class="q-text">Performance, Scalability, Large Lists, 100k Users, Onboarding?</span>
+    <span class="difficulty hard">Hard</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p><strong>Performance optimizations we implemented:</strong></p>
+    <ul>
+      <li>Code splitting on routes (<code>React.lazy</code>) reduced initial bundle by ~40%</li>
+      <li>Virtualized lists (react-window) for 10k+ item tables</li>
+      <li>React.memo + useCallback for heavy child components</li>
+      <li>Image lazy loading + WebP format</li>
+      <li>TanStack Query for caching API responses (no duplicate calls)</li>
+    </ul>
+    <p><strong>Scaling to 100k users:</strong></p>
+    <ul>
+      <li>CDN for static assets (Cloudfront, Vercel Edge)</li>
+      <li>SSR/SSG with Next.js for SEO and initial load</li>
+      <li>API Gateway + Load balancer on backend</li>
+      <li>Database read replicas, caching layer (Redis)</li>
+      <li>Micro-frontend architecture for independent team deployments</li>
+    </ul>
+    <p><strong>Onboarding developers:</strong> README with setup steps, ADRs (Architecture Decision Records), Storybook for components, consistent ESLint/Prettier config, PR templates.</p>
+  </div>
+</div>
+
+<div class="qa-card" data-q="CI CD Process Environment Variables Deployment Strategy Jest React Testing Library Unit Integration Testing">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q5</span>
+    <span class="q-text">CI/CD, Deployment, Testing (Jest, RTL, Unit vs Integration)?</span>
+    <span class="difficulty medium">Medium</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p><strong>CI/CD:</strong> GitHub Actions pipeline: lint → test → build → deploy. Feature branches → PR → main → auto-deploy to staging → manual promote to prod.</p>
+    <p><strong>Environment Variables:</strong> <code>.env.local</code>, <code>.env.production</code> — never commit secrets. Use REACT_APP_ prefix in CRA, VITE_ in Vite. Secrets in CI/CD vault.</p>
+    <p><strong>Testing:</strong></p>
+    <table>
+      <tr><th></th><th>Unit Tests (Jest)</th><th>Integration Tests (RTL)</th></tr>
+      <tr><td>Tests</td><td>Isolated functions/components</td><td>Component interactions</td></tr>
+      <tr><td>Speed</td><td>Fast</td><td>Moderate</td></tr>
+      <tr><td>Confidence</td><td>Low-medium</td><td>High</td></tr>
+    </table>
+    <pre><code><span class="comment">// React Testing Library – prefer user interactions</span>
+<span class="keyword">import</span> { render, screen, fireEvent } <span class="keyword">from</span> <span class="string">'@testing-library/react'</span>;
+
+test(<span class="string">'counter increments'</span>, () => {
+  render(&lt;Counter /&gt;);
+  fireEvent.click(screen.getByText(<span class="string">'+'</span>));
+  expect(screen.getByText(<span class="string">'1'</span>)).toBeInTheDocument();
+});</code></pre>
+  </div>
+</div>
+
+<div class="qa-card" data-q="Most difficult bug biggest challenge what would you improve problem solving">
+  <div class="qa-question" onclick="toggle(this)">
+    <span class="q-num">Q6</span>
+    <span class="q-text">Most Difficult Bug? Biggest Challenge? What Would You Improve?</span>
+    <span class="difficulty medium">Medium</span>
+    <span class="toggle-icon">+</span>
+  </div>
+  <div class="qa-answer">
+    <p><strong>Framework for answering (STAR method):</strong></p>
+    <ul>
+      <li><strong>Situation:</strong> Set the context (what were you building?)</li>
+      <li><strong>Task:</strong> What was the specific problem/requirement?</li>
+      <li><strong>Action:</strong> How did you debug/approach it? What tools did you use?</li>
+      <li><strong>Result:</strong> What was the outcome? What did you learn?</li>
+    </ul>
+    <p><strong>Example answer for "Difficult Bug":</strong> "We had a memory leak in production where the app's memory kept growing after navigation. I used Chrome DevTools heap snapshots to find that our useEffect subscriptions weren't being cleaned up in a custom hook used across 15 components. Added the cleanup return function and memory stabilized. This led us to add a team convention: always review useEffect cleanup in PRs."</p>
+    <p><strong>What would you improve?</strong> Be honest and forward-thinking: "I'd add more integration tests — we caught a production bug that our unit tests missed. I'd also introduce TanStack Query to replace our custom data-fetching hooks and get caching/deduplication for free."</p>
+  </div>
+</div>
+
+</div><!-- end container -->
+
+<footer>// React & JavaScript Interview Guide · Built for 2025 Interviews · Good luck! 🚀</footer>
+
+<script>
+function toggle(el) {
+  const card = el.closest('.qa-card');
+  card.classList.toggle('open');
+}
+
+function filterQuestions(query) {
+  const q = query.toLowerCase().trim();
+  const cards = document.querySelectorAll('.qa-card');
+  let anyVisible = false;
+  cards.forEach(card => {
+    const text = card.getAttribute('data-q').toLowerCase() + ' ' + card.textContent.toLowerCase();
+    if (!q || text.includes(q)) {
+      card.classList.remove('hidden');
+      anyVisible = true;
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+  document.getElementById('noResults').style.display = anyVisible ? 'none' : 'block';
+}
+
+// Open first card of each section by default
+document.querySelectorAll('.qa-card:first-of-type').forEach(card => {
+  // don't auto-open
+});
+</script>
+</body>
+</html>
